@@ -53,7 +53,7 @@ Settings
 * [ ] Optional: When all events are completed, dismiss the banner.
 
 ### Walkthrough of App
-<img src="">
+<img src="walkthrough/carouselish-walkthrough.gif">
 
 gif created with [licecap](http://www.cockos.com/licecap)
 
