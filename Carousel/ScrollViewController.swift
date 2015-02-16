@@ -10,6 +10,7 @@ import UIKit
 
 class ScrollViewController: UIViewController, UIScrollViewDelegate {
 
+    @IBOutlet weak var enterContainer: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var welcomeFirstImage: UIImageView!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -20,27 +21,22 @@ class ScrollViewController: UIViewController, UIScrollViewDelegate {
         // Do any additional setup after loading the view.
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: 1280, height: 568)
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         var page = Int(scrollView.contentOffset.x / 320)
         pageControl.currentPage = page
+        
+        
+        if (page == 3) {
+            UIView.animateKeyframesWithDuration(0.3, delay: 0.1, options: nil, animations: { () -> Void in
+                self.enterContainer.alpha = 1
+                }, completion: nil)
+        }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

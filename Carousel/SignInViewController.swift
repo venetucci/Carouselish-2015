@@ -10,31 +10,24 @@ import UIKit
 
 class SignInViewController: UIViewController, UITextFieldDelegate {
 
+    @IBOutlet weak var loginContainer: UIView!
+    @IBOutlet weak var buttonContainer: UIView!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+   
     @IBAction func goBackPopViewController(sender: AnyObject) {
         navigationController?.popViewControllerAnimated(true)
     }
@@ -42,6 +35,40 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func keyboardWillShow(notification: NSNotification!) {
+        var userInfo = notification.userInfo!
+        
+        var kbSize = (userInfo[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue().size
+        var durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber
+        var animationDuration = durationValue.doubleValue
+        var curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey] as NSNumber
+        var animationCurve = curveValue.integerValue
+        
+        UIView.animateWithDuration(animationDuration, delay: 0.0, options: UIViewAnimationOptions(UInt(animationCurve << 16)), animations: {
+            
+            self.loginContainer.center.y = kbSize.height - self.loginContainer.center.y/3
+      
+            self.buttonContainer.center.y = kbSize.height + self.buttonContainer.center.y/8
+            }, completion: nil)
+
+    }
+    
+    func keyboardWillHide(notification: NSNotification!) {
+        var userInfo = notification.userInfo!
+        
+        var kbSize = (userInfo[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue().size
+        var durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber
+        var animationDuration = durationValue.doubleValue
+        var curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey] as NSNumber
+        var animationCurve = curveValue.integerValue
+        
+        UIView.animateWithDuration(animationDuration, delay: 0.0, options: UIViewAnimationOptions(UInt(animationCurve << 16)), animations: {
+            
+            self.loginContainer.center.y = kbSize.height + self.loginContainer.center.y/10
+            self.buttonContainer.center.y = kbSize.height + self.buttonContainer.center.y/1
+            }, completion: nil)
     }
     
     @IBAction func signIn(sender: AnyObject) {
@@ -55,12 +82,18 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             
             delay(2, { () -> () in
                 alertView.dismissWithClickedButtonIndex(0, animated: true)
-                if self.emailTextField.text == "michelle@gmail.com" && self.passwordTextField.text == "password" {
+                if self.emailTextField.text == "m@g.com" && self.passwordTextField.text == "password" {
                     self.performSegueWithIdentifier("WelcomeSegue", sender: self)
                 } else {
                     UIAlertView(title: "Sign In Failed", message: "Incorrect email or password", delegate: self, cancelButtonTitle: "OK").show()
                 }
             })
         }
+    }
+    
+    
+    @IBAction
+    func unwindToSignInController(sender: UIStoryboardSegue) {
+        
     }
 }

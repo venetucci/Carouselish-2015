@@ -35,14 +35,11 @@ class IntroViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+      
         
         scrollView.delegate = self
-        
         scrollView.contentSize = imageView.frame.size
-        
         scrollView.sendSubviewToBack(imageView)
-
         imageViews = [tile1, tile2, tile3, tile4, tile5, tile6]
         
     }
@@ -71,7 +68,6 @@ class IntroViewController: UIViewController, UIScrollViewDelegate {
             imageView.transform = CGAffineTransformConcat(rotateTransform, translateTransform)
             imageView.transform = CGAffineTransformConcat(imageView.transform, scaleTransform)
         }
-        
     }
 
 }
